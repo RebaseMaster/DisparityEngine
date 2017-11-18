@@ -40,3 +40,7 @@ cmake-build-release/
 .vs/
 *.ilk
 *.pdb
+
+# own ignored files
+Lib/
+Bin/

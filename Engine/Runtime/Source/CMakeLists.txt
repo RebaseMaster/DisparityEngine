@@ -14,6 +14,15 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-ADD_SUBDIRECTORY(Runtime)
-ADD_SUBDIRECTORY(Test)
-ADD_SUBDIRECTORY(ThirdParty)
+# Adds all runtime header
+INCLUDE_DIRECTORIES(${DISPARITY_ENGINE_DIR}/Runtime/Header)
+
+# Compile all tests
+ADD_EXECUTABLE(DISPARITY_ENGINE
+       main.cpp)
+
+# But tests depends on GTEST and GMOCK
+ADD_DEPENDENCIES(DISPARITY_ENGINE SDL2 glew)
+
+# Linking ...
+TARGET_LINK_LIBRARIES(DISPARITY_ENGINE SDL2 glew ${PLATFORM_DEPENDENCIES})
