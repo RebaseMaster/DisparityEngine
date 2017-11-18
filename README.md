@@ -1,2 +1,2 @@
-# Disparity
-C++ cross-platform game engine with OpenGL 
+# Disparity Engine
+Disparity Engine source code 
