@@ -67,11 +67,16 @@ SET(CMAKE_CXX_STANDARD 11)
 MESSAGE(STATUS "Compilation debug   flags : " ${CXX_DEBUG_FLAGS})
 MESSAGE(STATUS "Compilation release flags : " ${CXX_RELEASE_FLAGS})
 
+SET(WIN32_DEPENDENCIES "opengl32")
+SET(APPLE_DEPENDENCIES "")
+SET(UNIX_DEPENDENCIES  "GL")
+
 # Platform detection and settings
 IF(WIN32)
 
     # Windows operating system
     SET(DISPARITY_WINDOWS 1)
+    SET(PLATFORM_DEPENDENCIES ${WIN32_DEPENDENCIES})
     ADD_DEFINITIONS(-D DISPARITY_WINDOWS)
     MESSAGE(STATUS "Detected platform : Windows")
 
@@ -79,6 +84,7 @@ ELSEIF(UNIX)
 
     # Unix operating system
     SET(DISPARITY_UNIX 1)
+    SET(PLATFORM_DEPENDENCIES ${UNIX_DEPENDENCIES})
     ADD_DEFINITIONS(-D DISPARITY_UNIX)
     MESSAGE(STATUS "Detected platform : Unix")
 
@@ -86,6 +92,7 @@ ELSEIF(APPLE)
 
     # Mac os operating system
     SET(DISPARITY_APPLE 1)
+    SET(PLATFORM_DEPENDENCIES ${APPLE_DEPENDENCIES})
     ADD_DEFINITIONS(-D DISPARITY_APPLE)
     MESSAGE(STATUS "Detected platform : Apple")
 
@@ -93,6 +100,7 @@ ELSE()
 
     # Not supported
     SET(PLATFORM_NOT_SUPORTED 0)
+    SET(PLATFORM_DEPENDENCIES)
     ADD_DEFINITIONS(-D PLATFORM_NOT_SUPORTED)
     MESSAGE(FATAL_ERROR "This plateform is currently not supported")
 
@@ -139,10 +147,6 @@ ELSE()
     MESSAGE(FATAL_ERROR "No build type, please configure it")
 
 ENDIF()
-
-SET(WIN32_DEPENDENCIES "")
-SET(APPLE_DEPENDENCIES "")
-SET(UNIX_DEPENDENCIES  "")
 
 # Avoiding the Release/Debug subdirectories
 SET(CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${DISPARITY_BIN_OUTPUT})
