@@ -25,5 +25,5 @@
 /// \brief  Tests the initialization of a vector from 4 floats
 TEST(UnitTestTest, Samples)
 {
-    EXPECT_EQ(42, 42);
+
 }
