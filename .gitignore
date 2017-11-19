@@ -41,6 +41,9 @@ cmake-build-release/
 *.ilk
 *.pdb
 
-# own ignored files
+# Generated files
+*.pc
+
+# Own ignored files
 Lib/
 Bin/
