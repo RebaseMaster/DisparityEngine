@@ -58,7 +58,13 @@ Chaque fichier source ou d'en tête doit include la notice suivante :
  * Les noms explicites sont meilleurs qu'une abréviation sauf si cela est évident
  * Les variables de boucle sont préfixés par un **n**
     * Cela rend plus visible ces variables surtout dans les grandes boucles
- 
+ * Les noms de classes abstraites sont préfixées d'un **A**
+ * Les noms des interfaces sont préfixées d'un **I**
+ * Les noms des templates sont préfixés d'un **T**
+ * L'extension des fichiers d'en-tête C est .h
+ * L'extension des fichiers d'en-tête C++ est .hpp
+ * L'extension des fichiers inline est .inl
+    
     #### Exemples
     ```cpp
     class Player
