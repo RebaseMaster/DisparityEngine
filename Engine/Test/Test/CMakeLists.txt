@@ -17,9 +17,6 @@
 # Adds all runtime header
 INCLUDE_DIRECTORIES(${DISPARITY_ENGINE_DIR}/Runtime/Header)
 
-# Disables anoying attributes warning
-ADD_DEFINITIONS(-Wno-attributes)
-
 # Compile all tests
 ADD_EXECUTABLE(DISPARITY_TEST_UNIT_TEST
         UnitTestTest.cpp)
