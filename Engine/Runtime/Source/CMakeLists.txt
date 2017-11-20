@@ -19,7 +19,9 @@ INCLUDE_DIRECTORIES(${DISPARITY_ENGINE_DIR}/Runtime/Header)
 
 # Compile all tests
 ADD_EXECUTABLE(DISPARITY_ENGINE
-       main.cpp)
+        main.cpp
+        Renderer.cpp
+        Exception.cpp)
 
 # But tests depends on GTEST and GMOCK
 ADD_DEPENDENCIES(DISPARITY_ENGINE SDL2main SDL2 glew)
