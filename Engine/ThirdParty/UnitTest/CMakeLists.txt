@@ -18,6 +18,11 @@ else()
   include(GNUInstallDirs)
 endif()
 
+# Fix for old compiler
+IF(WIN32 AND DISPARITY_USE_GCC)
+  ADD_DEFINITIONS(-DWINVER=0x0500)
+ENDIF()
+
 option(BUILD_GTEST "Builds the googletest subproject" OFF)
 
 #Note that GoogleMock target already builds GoogleTest
