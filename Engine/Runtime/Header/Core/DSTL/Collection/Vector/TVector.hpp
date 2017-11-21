@@ -49,6 +49,10 @@ public:
     using const_pointer_t   = Tp const*;
     using const_reference_t = Tp const&;
 
+    // Experimental version
+    using iterator       = pointer_t;
+    using const_iterator = const_pointer_t;
+
 public:
 
     explicit /* inline */ TVector() noexcept;
@@ -81,9 +85,14 @@ public:
     /* inline */ reference_t       Front()       noexcept;
     /* inline */ const_reference_t Front() const noexcept;
 
+    /* inline */ iterator          End()         noexcept;
+    /* inline */ const_iterator    End()   const noexcept;
+    /* inline */ iterator          Begin()       noexcept;
+    /* inline */ const_iterator    Begin() const noexcept;
+
     /* inline */ size Size()    const noexcept;
     /* inline */ size Capcity() const noexcept;
-    /* inline */ bool  Empty()  const noexcept;
+    /* inline */ bool Empty()   const noexcept;
 
     /* inline */ pointer_t       Data()       noexcept;
     /* inline */ const_pointer_t Data() const noexcept;
@@ -93,10 +102,10 @@ private:
     /* inline */ void Grow();
     /* inline */ void Reallocate();
 
-    /* inline */ template <bool IsPOD> static void FillRange();
-    /* inline */ template <bool IsPOD> static void DeleteRange();
-    /* inline */ template <bool IsPOD> static void DestructRange();
-    /* inline */ template <bool IsPOD> static void ConstructRange();
+    /* inline */ template <bool IsPOD> static void FillRange     (const_iterator begin, const_iterator end);
+    /* inline */ template <bool IsPOD> static void DeleteRange   (const_iterator begin, const_iterator end);
+    /* inline */ template <bool IsPOD> static void DestructRange (const_iterator begin, const_iterator end);
+    /* inline */ template <bool IsPOD> static void ConstructRange(const_iterator begin, const_iterator end);
 
 private:
 

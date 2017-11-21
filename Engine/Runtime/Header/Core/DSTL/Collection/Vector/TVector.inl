@@ -89,7 +89,7 @@ TVector<Tp>::TVector(std::initializer_list<value_t> il)
 template <typename Tp>
 TVector<Tp>::~TVector()
 {
-    DestructRange<std::is_pod<Tp>::value>();
+    DestructRange<std::is_pod<Tp>::value>(Begin(), End());
     delete[] m_aStorage;
 }
 
@@ -218,10 +218,42 @@ TVector<Tp>::const_reference_t TVector<Tp>::Front() const /* noexcept */
     return *m_aStorage;
 }
 
+/// \brief  Returns the end iterator
+/// \return The end iterator
+template <typename Tp>
+TVector<Tp>::iterator TVector<Tp>::End() /* noexcept */
+{
+    return m_aStorage[m_size];
+}
+
+/// \brief  Returns the end iterator
+/// \return The end const_iterator
+template <typename Tp>
+TVector<Tp>::const_iterator TVector<Tp>::End() const /* noexcept */
+{
+    return m_aStorage[m_size];
+}
+
+/// \brief  Returns the begin iterator
+/// \return The begin iterator
+template <typename Tp>
+TVector<Tp>::iterator TVector<Tp>::Begin() /* noexcept */
+{
+    return m_aStorage;
+}
+
+/// \brief  Returns the begin iterator
+/// \return The begin const_iterator
+template <typename Tp>
+TVector<Tp>::const_iterator TVector<Tp>::Begin() const /* noexcept */
+{
+    return m_aStorage;
+}
+
 /// \brief  Returns the current size of the vector
 /// \return The size of the vector
 template <typename Tp>
-size TVector<Tp>::Size()    const /* noexcept */
+size TVector<Tp>::Size() const /* noexcept */
 {
     return m_size;
 }
@@ -276,7 +308,7 @@ void TVector<Tp>::Reallocate()
 /// \brief
 template <typename Tp>
 template <bool IsPOD>
-/* static */ void TVector<Tp>::FillRange()
+/* static */ void TVector<Tp>::FillRange(const_iterator begin, const_iterator end)
 {
     // TODO
 }
@@ -284,7 +316,7 @@ template <bool IsPOD>
 /// \brief
 template <typename Tp>
 template <>
-/* static */ void TVector<Tp>::FillRange<true>()
+/* static */ void TVector<Tp>::FillRange<true>(const_iterator begin, const_iterator end)
 {
     // TODO
 }
@@ -292,7 +324,7 @@ template <>
 /// \brief
 template <typename Tp>
 template <bool IsPOD>
-/* static */ void TVector<Tp>::DeleteRange()
+/* static */ void TVector<Tp>::DeleteRange(const_iterator begin, const_iterator end)
 {
     // TODO
 }
@@ -300,15 +332,33 @@ template <bool IsPOD>
 /// \brief
 template <typename Tp>
 template <>
-/* static */ void TVector<Tp>::DeleteRange<true>()
+/* static */ void TVector<Tp>::DeleteRange<true>(const_iterator begin, const_iterator end)
 {
     // TODO
+}
+
+/// \brief  Calls the destructor on all elements
+/// \tparam IsPOD Is the type a plain old data structure ?
+template <typename Tp>
+template <bool IsPOD>
+/* static */ void TVector<Tp>::DestructRange(const_iterator begin, const_iterator end)
+{
+    // TODO
+}
+
+/// \brief  Specialized version of DestructRange for POD
+///         Does nothing.
+template <typename Tp>
+template <>
+/* static */ void TVector<Tp>::DestructRange<true>(const_iterator begin, const_iterator end)
+{
+    // None
 }
 
 /// \brief
 template <typename Tp>
 template <bool IsPOD>
-/* static */ void TVector<Tp>::DestructRange()
+/* static */ void TVector<Tp>::ConstructRange(const_iterator begin, const_iterator end)
 {
     // TODO
 }
@@ -316,23 +366,7 @@ template <bool IsPOD>
 /// \brief
 template <typename Tp>
 template <>
-/* static */ void TVector<Tp>::DestructRange<true>()
-{
-    // TODO
-}
-
-/// \brief
-template <typename Tp>
-template <bool IsPOD>
-/* static */ void TVector<Tp>::ConstructRange()
-{
-    // TODO
-}
-
-/// \brief
-template <typename Tp>
-template <>
-/* static */ void TVector<Tp>::ConstructRange<true>()
+/* static */ void TVector<Tp>::ConstructRange<true>(const_iterator begin, const_iterator end)
 {
     // TODO
 }
