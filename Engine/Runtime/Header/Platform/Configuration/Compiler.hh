@@ -30,14 +30,12 @@
 
 /// \brief  Cross-compiler settings (GCC | MSVC)
 #if   defined(DISPARITY_USE_GCC)
-#   define INLINE                 inline
 #   define RESTRICT             __restrict__
 #   define NO_INLINE            __attribute__ ((noinline))
 #   define ALIGNMENT(ALIGNMENT) __attribute__ ((aligned (ALIGNMENT)))
 #   define FORCE_INLINE         __attribute__ ((always_inline))
 
 #elif defined(DISPARITY_USE_MSVC)
-#   define INLINE                 inline
 #   define RESTRICT             __restrict
 #   define NO_INLINE            __declspec    (noinline)
 #   define ALIGNMENT(ALIGNMENT) __declspec    (align (ALIGNMENT))

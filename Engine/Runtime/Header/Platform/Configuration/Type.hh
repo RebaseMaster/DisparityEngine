@@ -28,6 +28,10 @@
 #ifndef DISPARITY_TYPE_HPP__
 #define DISPARITY_TYPE_HPP__
 
+#ifndef nullptr_t
+#   define nullptr_t nullptr
+#endif // !nullptr_t
+
 typedef unsigned char	    uchar;
 typedef unsigned short	    ushort;
 typedef unsigned int	    uint;

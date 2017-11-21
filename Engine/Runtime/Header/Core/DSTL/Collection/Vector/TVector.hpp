@@ -30,7 +30,7 @@
 
 #include <initializer_list>
 #include "Platform/Configuration/Configuration.hh"
-
+#include <vector>
 /// \namespace Disparity
 namespace Disparity
 {
@@ -49,23 +49,44 @@ public:
     using const_pointer_t   = Tp const*;
     using const_reference_t = Tp const&;
 
-    explicit /* INLINE */ TVector();
-    explicit /* INLINE */ TVector(size_t n);
-    explicit /* INLINE */ TVector(size_t n, const_reference_t val);
+public:
 
-    /* INLINE */ TVector(TVector<value_t> const& other);
-    /* INLINE */ TVector(TVector<value_t>&&      other);
-    /* INLINE */ TVector(std::initializer_list<value_t> il);
+    explicit /* inline */ TVector() noexcept;
+    explicit /* inline */ TVector(size_t n);
+    explicit /* inline */ TVector(size_t n, const_reference_t val);
 
-    /* INLINE */ ~TVector() noexcept;
+    /* inline */ TVector(TVector<value_t> const& other);
+    /* inline */ TVector(TVector<value_t>&&      other) noexcept;
+    /* inline */ TVector(std::initializer_list<value_t> il);
 
-    /* INLINE */ reference_t       operator[](size_t pos);
-    /* INLINE */ const_reference_t operator[](size_t pos) const;
+    /* inline */ ~TVector() noexcept;
 
-private:
+    /* inline */ void Clear() noexcept;
+    /* inline */ void Reserve(size_t n);
 
-    static /* INLINE */ void      CopyRange  (...);
-    static /* INLINE */ void      DeleteRange(...);
+    /* inline */ void PopBack() noexcept;
+    /* inline */ void PushBack(const_reference_t val);
+    /* inline */ void PushBack(value_t && val);
+
+    template <class ... Args>
+    /* inline */  void EmplaceBack(Args&& ...args);
+
+    /* inline */ reference_t       at(size_t pos)       noexcept;
+    /* inline */ const_reference_t at(size_t pos) const noexcept;
+    /* inline */ reference_t       operator[](size_t pos)       noexcept;
+    /* inline */ const_reference_t operator[](size_t pos) const noexcept;
+
+    /* inline */ reference_t       Back()        noexcept;
+    /* inline */ const_reference_t Back()  const noexcept;
+    /* inline */ reference_t       Front()       noexcept;
+    /* inline */ const_reference_t Front() const noexcept;
+
+    /* inline */ size_t Size()    const noexcept;
+    /* inline */ size_t Capcity() const noexcept;
+    /* inline */ bool   Empty()   const noexcept;
+
+    /* inline */ pointer_t       Data()       noexcept;
+    /* inline */ const_pointer_t Data() const noexcept;
 
 private:
 
