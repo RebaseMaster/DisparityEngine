@@ -25,7 +25,6 @@
 /// \package    Core/DSTL/Collection/Vector
 /// \author     Vincent STEHLY--CALISTO
 
-#include <type_traits>
 #include "TVector.hpp"
 
 /// \namespace Disparity
@@ -34,7 +33,7 @@ namespace Disparity
 
 /// \brief  Default constructor
 template <typename Tp>
-/* explicit */ TVector<Tp>::TVector() /* noexcept */
+/* explicit */ TVector<Tp>::TVector() noexcept
 : m_size(0)
 , m_capacity(0)
 , m_aStorage(nullptr_t)
@@ -72,7 +71,7 @@ TVector<Tp>::TVector(TVector<value_t> const& other)
 /// \brief  Move constructor
 /// \param  other A rvalue on the vector to move
 template <typename Tp>
-TVector<Tp>::TVector(TVector<value_t>&& other) /* noexcept */
+TVector<Tp>::TVector(TVector<value_t>&& other) noexcept
 {
     // TODO
 }
@@ -87,15 +86,15 @@ TVector<Tp>::TVector(std::initializer_list<value_t> il)
 
 /// \brief  Destructor
 template <typename Tp>
-TVector<Tp>::~TVector()
+TVector<Tp>::~TVector() noexcept
 {
-    DestructRange<std::is_pod<Tp>::value>(Begin(), End());
+    DestructRange(Begin(), End(), TPODType<Tp>());
     delete[] m_aStorage;
 }
 
 /// \brief  Removes all elements from the vector
 template <typename Tp>
-void TVector<Tp>::Clear() /* noexcept */
+void TVector<Tp>::Clear() noexcept
 {
     // TODO
 }
@@ -111,7 +110,7 @@ void TVector<Tp>::Reserve(size n)
 /// \brief  Removes the last elements of the vector
 ///         If the container is empty, causes undefined behavior
 template <typename Tp>
-void TVector<Tp>::PopBack() /* noexcept */
+void TVector<Tp>::PopBack() noexcept
 {
     // TODO
 }
@@ -148,7 +147,7 @@ void TVector<Tp>::EmplaceBack(Args&& ...args)
 /// \param  pos The pos of the element to return
 /// \return A reference_t on the element
 template <typename Tp>
-TVector<Tp>::reference_t TVector<Tp>::at(size pos) /* noexcept */
+typename TVector<Tp>::reference_t TVector<Tp>::at(size pos) noexcept
 {
     // TODO : Assert pos
     return m_aStorage[pos];
@@ -158,7 +157,7 @@ TVector<Tp>::reference_t TVector<Tp>::at(size pos) /* noexcept */
 /// \param  pos The pos of the element to return
 /// \return A const_reference_t on the element
 template <typename Tp>
-TVector<Tp>::const_reference_t TVector<Tp>::at(size pos) const /* noexcept */
+typename TVector<Tp>::const_reference_t TVector<Tp>::at(size pos) const noexcept
 {
     // TODO : Assert pos
     return m_aStorage[pos];
@@ -168,7 +167,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::at(size pos) const /* noexcept */
 /// \param  pos The pos of the element to return
 /// \return A reference_t on the element
 template <typename Tp>
-TVector<Tp>::reference_t TVector<Tp>::operator[](size pos) /* noexcept */
+typename TVector<Tp>::reference_t TVector<Tp>::operator[](size pos) noexcept
 {
     return m_aStorage[pos];
 }
@@ -177,7 +176,7 @@ TVector<Tp>::reference_t TVector<Tp>::operator[](size pos) /* noexcept */
 /// \param  pos The pos of the element to return
 /// \return A const_reference_t on the element
 template <typename Tp>
-TVector<Tp>::const_reference_t TVector<Tp>::operator[](size pos) const /* noexcept */
+typename TVector<Tp>::const_reference_t TVector<Tp>::operator[](size pos) const noexcept
 {
     return m_aStorage[pos];
 }
@@ -186,7 +185,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::operator[](size pos) const /* noexce
 ///         If the vector is empty, causes an undefined behavior
 /// \return A reference_t on the last element of the vector
 template <typename Tp>
-TVector<Tp>::reference_t TVector<Tp>::Back()  /* noexcept */
+typename TVector<Tp>::reference_t TVector<Tp>::Back() noexcept
 {
     return m_aStorage[m_size - 1];
 }
@@ -195,7 +194,7 @@ TVector<Tp>::reference_t TVector<Tp>::Back()  /* noexcept */
 ///         If the vector is empty, causes an undefined behavior
 /// \return A const_reference_t on the last element of the vector
 template <typename Tp>
-TVector<Tp>::const_reference_t TVector<Tp>::Back() const /* noexcept */
+typename TVector<Tp>::const_reference_t TVector<Tp>::Back() const noexcept
 {
     return m_aStorage[m_size - 1];
 }
@@ -204,7 +203,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::Back() const /* noexcept */
 ///         If the vector is empty, causes an undefined behavior
 /// \return A reference_t on the first element of the vector
 template <typename Tp>
-TVector<Tp>::reference_t TVector<Tp>::Front() /* noexcept */
+typename TVector<Tp>::reference_t TVector<Tp>::Front() noexcept
 {
     return *m_aStorage;
 }
@@ -213,7 +212,7 @@ TVector<Tp>::reference_t TVector<Tp>::Front() /* noexcept */
 ///         If the vector is empty, causes an undefined behavior
 /// \return A const_reference_t on the first element of the vector
 template <typename Tp>
-TVector<Tp>::const_reference_t TVector<Tp>::Front() const /* noexcept */
+typename TVector<Tp>::const_reference_t TVector<Tp>::Front() const noexcept
 {
     return *m_aStorage;
 }
@@ -221,7 +220,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::Front() const /* noexcept */
 /// \brief  Returns the end iterator
 /// \return The end iterator
 template <typename Tp>
-TVector<Tp>::iterator TVector<Tp>::End() /* noexcept */
+typename TVector<Tp>::iterator TVector<Tp>::End() noexcept
 {
     return m_aStorage[m_size];
 }
@@ -229,7 +228,7 @@ TVector<Tp>::iterator TVector<Tp>::End() /* noexcept */
 /// \brief  Returns the end iterator
 /// \return The end const_iterator
 template <typename Tp>
-TVector<Tp>::const_iterator TVector<Tp>::End() const /* noexcept */
+typename TVector<Tp>::const_iterator TVector<Tp>::End() const noexcept
 {
     return m_aStorage[m_size];
 }
@@ -237,7 +236,7 @@ TVector<Tp>::const_iterator TVector<Tp>::End() const /* noexcept */
 /// \brief  Returns the begin iterator
 /// \return The begin iterator
 template <typename Tp>
-TVector<Tp>::iterator TVector<Tp>::Begin() /* noexcept */
+typename TVector<Tp>::iterator TVector<Tp>::Begin() noexcept
 {
     return m_aStorage;
 }
@@ -245,7 +244,7 @@ TVector<Tp>::iterator TVector<Tp>::Begin() /* noexcept */
 /// \brief  Returns the begin iterator
 /// \return The begin const_iterator
 template <typename Tp>
-TVector<Tp>::const_iterator TVector<Tp>::Begin() const /* noexcept */
+typename TVector<Tp>::const_iterator TVector<Tp>::Begin() const noexcept
 {
     return m_aStorage;
 }
@@ -253,7 +252,7 @@ TVector<Tp>::const_iterator TVector<Tp>::Begin() const /* noexcept */
 /// \brief  Returns the current size of the vector
 /// \return The size of the vector
 template <typename Tp>
-size TVector<Tp>::Size() const /* noexcept */
+size TVector<Tp>::Size() const noexcept
 {
     return m_size;
 }
@@ -261,7 +260,7 @@ size TVector<Tp>::Size() const /* noexcept */
 /// \brief  Returns the current capacity of the vector
 /// \return The capacity of the vector
 template <typename Tp>
-size TVector<Tp>::Capcity() const /* noexcept */
+size TVector<Tp>::Capcity() const noexcept
 {
     return m_capacity;
 }
@@ -269,7 +268,7 @@ size TVector<Tp>::Capcity() const /* noexcept */
 /// \brief  Tells if the vector is empty or not
 /// \return True or false
 template <typename Tp>
-bool TVector<Tp>::Empty() const /* noexcept */
+bool TVector<Tp>::Empty() const noexcept
 {
     return (m_size == 0);
 }
@@ -277,7 +276,7 @@ bool TVector<Tp>::Empty() const /* noexcept */
 /// \brief  Returns a pointer on the internal storage of the vector
 /// \return A pointer_t on the internal storage
 template <typename Tp>
-TVector<Tp>::pointer_t TVector<Tp>::Data() /* noexcept */
+typename TVector<Tp>::pointer_t TVector<Tp>::Data() noexcept
 {
     return m_aStorage;
 }
@@ -285,7 +284,7 @@ TVector<Tp>::pointer_t TVector<Tp>::Data() /* noexcept */
 /// \brief  Returns a read only pointer on the internal storage of the vector
 /// \return A const_pointer_t on the internal storage
 template <typename Tp>
-TVector<Tp>::const_pointer_t TVector<Tp>::Data() const /* noexcept */
+typename TVector<Tp>::const_pointer_t TVector<Tp>::Data() const noexcept
 {
     return m_aStorage;
 }
@@ -307,32 +306,28 @@ void TVector<Tp>::Reallocate()
 
 /// \brief
 template <typename Tp>
-template <bool IsPOD>
-/* static */ void TVector<Tp>::FillRange(const_iterator begin, const_iterator end)
+/* static */ void TVector<Tp>::FillRange(const_iterator begin, const_iterator end, PODTag tag)
 {
     // TODO
 }
 
 /// \brief
 template <typename Tp>
-template <>
-/* static */ void TVector<Tp>::FillRange<true>(const_iterator begin, const_iterator end)
+/* static */ void TVector<Tp>::FillRange(const_iterator begin, const_iterator end, NonPODTag tag)
 {
     // TODO
 }
 
 /// \brief
 template <typename Tp>
-template <bool IsPOD>
-/* static */ void TVector<Tp>::DeleteRange(const_iterator begin, const_iterator end)
+/* static */ void TVector<Tp>::DeleteRange(const_iterator begin, const_iterator end, PODTag tag)
 {
     // TODO
 }
 
 /// \brief
 template <typename Tp>
-template <>
-/* static */ void TVector<Tp>::DeleteRange<true>(const_iterator begin, const_iterator end)
+/* static */ void TVector<Tp>::DeleteRange(const_iterator begin, const_iterator end, NonPODTag tag)
 {
     // TODO
 }
@@ -340,8 +335,7 @@ template <>
 /// \brief  Calls the destructor on all elements
 /// \tparam IsPOD Is the type a plain old data structure ?
 template <typename Tp>
-template <bool IsPOD>
-/* static */ void TVector<Tp>::DestructRange(const_iterator begin, const_iterator end)
+/* static */ void TVector<Tp>::DestructRange(const_iterator begin, const_iterator end, PODTag tag)
 {
     // TODO
 }
@@ -349,26 +343,39 @@ template <bool IsPOD>
 /// \brief  Specialized version of DestructRange for POD
 ///         Does nothing.
 template <typename Tp>
-template <>
-/* static */ void TVector<Tp>::DestructRange<true>(const_iterator begin, const_iterator end)
+/* static */ void TVector<Tp>::DestructRange(const_iterator begin, const_iterator end, NonPODTag tag)
 {
     // None
 }
 
 /// \brief
 template <typename Tp>
-template <bool IsPOD>
-/* static */ void TVector<Tp>::ConstructRange(const_iterator begin, const_iterator end)
+/* static */ void TVector<Tp>::ConstructRange(const_iterator begin, const_iterator end, PODTag tag)
 {
     // TODO
 }
 
 /// \brief
 template <typename Tp>
-template <>
-/* static */ void TVector<Tp>::ConstructRange<true>(const_iterator begin, const_iterator end)
+/* static */ void TVector<Tp>::ConstructRange(const_iterator begin, const_iterator end, NonPODTag tag)
 {
     // TODO
+}
+
+/// \brief  Returns an the begin iterator of the given vector
+/// \return The begin iterator
+template <typename Tp>
+typename TVector<Tp>::iterator Begin(TVector<Tp>& vector) noexcept
+{
+    return vector.Begin();
+}
+
+/// \brief  Returns an the end iterator of the given vector
+/// \return The end iterator
+template <typename Tp>
+typename TVector<Tp>::iterator End  (TVector<Tp>& vector) noexcept
+{
+    return vector.End();
 }
 
 } // !Disparity

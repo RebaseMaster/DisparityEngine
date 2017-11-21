@@ -73,3 +73,22 @@ TEST(PODUnitTest, ObjectPODTest)
     EXPECT_FALSE(IsPod<NPODClass> ::value);
     EXPECT_FALSE(IsPod<HNPODClass>::value);
 }
+
+template <typename Tp> bool TagCheck  (Tp&&)     { return false; }
+template <>            bool TagCheck<>(PODTag&&) { return true;  }
+
+/// \brief  Tests if the TPODType helper returns the right tag
+///         depending the object
+TEST(PODUnitTest, TPODTypeUnitTest)
+{
+    EXPECT_TRUE(TagCheck(TPODType<int8 >()));
+    EXPECT_TRUE(TagCheck(TPODType<int16>()));
+    EXPECT_TRUE(TagCheck(TPODType<int32>()));
+    EXPECT_TRUE(TagCheck(TPODType<int64>()));
+
+    EXPECT_TRUE(TagCheck(TPODType<PODClass>()));
+    EXPECT_TRUE(TagCheck(TPODType<HPODClass>()));
+
+    EXPECT_FALSE(TagCheck(TPODType<NPODClass >()));
+    EXPECT_FALSE(TagCheck(TPODType<HNPODClass>()));
+}

@@ -29,6 +29,7 @@
 #define TVECTOR_HPP__
 
 #include <initializer_list>
+#include "Core/DSTL/Trait/TPODTrait.hpp"
 #include "Platform/Configuration/Configuration.hh"
 
 /// \namespace Disparity
@@ -72,8 +73,7 @@ public:
     /* inline */ void PushBack(const_reference_t val);
     /* inline */ void PushBack(value_t && val);
 
-    template <class ... Args>
-    /* inline */  void EmplaceBack(Args&& ...args);
+    /* inline */  template <class ... Args> void EmplaceBack(Args&& ...args);
 
     /* inline */ reference_t       at(size pos)       noexcept;
     /* inline */ const_reference_t at(size pos) const noexcept;
@@ -102,10 +102,14 @@ private:
     /* inline */ void Grow();
     /* inline */ void Reallocate();
 
-    /* inline */ template <bool IsPOD> static void FillRange     (const_iterator begin, const_iterator end);
-    /* inline */ template <bool IsPOD> static void DeleteRange   (const_iterator begin, const_iterator end);
-    /* inline */ template <bool IsPOD> static void DestructRange (const_iterator begin, const_iterator end);
-    /* inline */ template <bool IsPOD> static void ConstructRange(const_iterator begin, const_iterator end);
+    /* inline */ static void FillRange     (const_iterator begin, const_iterator end, PODTag    tag);
+    /* inline */ static void FillRange     (const_iterator begin, const_iterator end, NonPODTag tag);
+    /* inline */ static void DeleteRange   (const_iterator begin, const_iterator end, PODTag    tag);
+    /* inline */ static void DeleteRange   (const_iterator begin, const_iterator end, NonPODTag tag);
+    /* inline */ static void DestructRange (const_iterator begin, const_iterator end, PODTag    tag);
+    /* inline */ static void DestructRange (const_iterator begin, const_iterator end, NonPODTag tag);
+    /* inline */ static void ConstructRange(const_iterator begin, const_iterator end, PODTag    tag);
+    /* inline */ static void ConstructRange(const_iterator begin, const_iterator end, NonPODTag tag);
 
 private:
 

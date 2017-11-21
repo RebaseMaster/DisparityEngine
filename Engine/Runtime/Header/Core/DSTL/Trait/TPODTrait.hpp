@@ -28,15 +28,41 @@
 #ifndef TPOD_TRAIT_HPP__
 #define TPOD_TRAIT_HPP__
 
+struct PODTag    {}; ///< POD object tag
+struct NonPODTag {}; ///< Non POD object tag
+
 /// \brief  Encapsulates std::is_pod<T>
 /// \tparam Tp The type to check POD compatibility
 template <typename Tp>
 struct IsPod
 {
-    static bool value;
+    static const bool value;
 };
 
 // Static member initialization of IsPod<Tp>::value
-template <typename Tp> bool IsPod<Tp>::value = std::is_pod<Tp>::value;
+template <typename Tp> const bool IsPod<Tp>::value = std::is_pod<Tp>::value;
+
+/// \brief  Stores a POD tag
+///         Generic version for non POD objects
+template <bool IsPOD>
+struct TPODTagHelper
+{
+    typedef NonPODTag PODType_t;
+};
+
+/// \brief  Specialized version for POD objects
+template <>
+struct TPODTagHelper<true>
+{
+    typedef PODTag PODType_t;
+};
+
+/// \brief  Returns the right POD tag of the given type
+/// \tparam The type of the object to check
+template <typename Tp>
+typename TPODTagHelper<IsPod<Tp>::value>::PODType_t TPODType()
+{
+    return typename TPODTagHelper<IsPod<Tp>::value>::PODType_t();
+};
 
 #endif // !TPOD_TRAIT_HPP__
