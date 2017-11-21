@@ -85,10 +85,10 @@ public:
     /* inline */ reference_t       Front()       noexcept;
     /* inline */ const_reference_t Front() const noexcept;
 
-    /* inline */ iterator          End()         noexcept;
-    /* inline */ const_iterator    End()   const noexcept;
-    /* inline */ iterator          Begin()       noexcept;
-    /* inline */ const_iterator    Begin() const noexcept;
+    /* inline */ iterator          end()         noexcept;
+    /* inline */ const_iterator    end()   const noexcept;
+    /* inline */ iterator          begin()       noexcept;
+    /* inline */ const_iterator    begin() const noexcept;
 
     /* inline */ size Size()    const noexcept;
     /* inline */ size Capcity() const noexcept;
@@ -102,14 +102,14 @@ private:
     /* inline */ void Grow();
     /* inline */ void Reallocate();
 
-    /* inline */ static void FillRange     (const_iterator begin, const_iterator end, PODTag    tag);
-    /* inline */ static void FillRange     (const_iterator begin, const_iterator end, NonPODTag tag);
-    /* inline */ static void DeleteRange   (const_iterator begin, const_iterator end, PODTag    tag);
-    /* inline */ static void DeleteRange   (const_iterator begin, const_iterator end, NonPODTag tag);
-    /* inline */ static void DestructRange (const_iterator begin, const_iterator end, PODTag    tag);
-    /* inline */ static void DestructRange (const_iterator begin, const_iterator end, NonPODTag tag);
-    /* inline */ static void ConstructRange(const_iterator begin, const_iterator end, PODTag    tag);
-    /* inline */ static void ConstructRange(const_iterator begin, const_iterator end, NonPODTag tag);
+    /* inline */ static void DestructRange (iterator begin, const_iterator end, PODTag    tag);
+    /* inline */ static void DestructRange (iterator begin, const_iterator end, NonPODTag tag);
+    /* inline */ static void ConstructRange(iterator begin, const_iterator end, PODTag    tag);
+    /* inline */ static void ConstructRange(iterator begin, const_iterator end, NonPODTag tag);
+    /* inline */ static void CopyRange     (iterator begin, const_iterator end, iterator dest, PODTag    tag);
+    /* inline */ static void CopyRange     (iterator begin, const_iterator end, iterator dest, NonPODTag tag);
+    /* inline */ static void ConstructRange(iterator begin, const_iterator end, const_reference_t val, PODTag tag);
+    /* inline */ static void ConstructRange(iterator begin, const_iterator end, const_reference_t val, NonPODTag tag);
 
 private:
 

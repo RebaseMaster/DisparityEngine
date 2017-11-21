@@ -28,8 +28,12 @@
 #include "Core/DSTL/Collection/Vector/TVector.hpp"
 
 /// \brief  Test if the TVector is usable with for range loop
-TEST(PODUnitTest, VectorForRangeUnitTest)
+TEST(TVectorUnitTest, TVectorForRangeUnitTest)
 {
-    // Disparity::TVector<int> vector;
+    Disparity::TVector<int> vector;
+    for(auto x : vector)
+    {
+
+    }
 }
 

@@ -25,6 +25,8 @@
 /// \package    Core/DSTL/Collection/Vector
 /// \author     Vincent STEHLY--CALISTO
 
+#include <memory.h>
+#include <cstdlib>
 #include "TVector.hpp"
 
 /// \namespace Disparity
@@ -45,9 +47,11 @@ template <typename Tp>
 ///         Fills the vector with n values
 /// \param  n The number of values to fill the vector
 template <typename Tp>
-/* explicit */ TVector<Tp>::TVector(size n)
+/* explicit */ TVector<Tp>::TVector(size n) : TVector<Tp>::TVector()
 {
-    // TODO
+    // TODO : Collapse code
+    Reserve(n);
+    ConstructRange(begin(), begin() + n, TPODType<Tp>());
 }
 
 /// \brief  Fill constructor
@@ -56,24 +60,35 @@ template <typename Tp>
 /// \param  val The value to copy
 template <typename Tp>
 /* explicit */ TVector<Tp>::TVector(size n, const_reference_t val)
+: TVector<Tp>::TVector()
 {
-    // TODO
+    // TODO : Collapse code
+    Reserve(n);
+    ConstructRange(begin(), begin() + n, val, TPODType<Tp>());
 }
 
 /// \brief  Copy constructor
 /// \param  other The other vector to copy
 template <typename Tp>
 TVector<Tp>::TVector(TVector<value_t> const& other)
+: TVector<Tp>::TVector()
 {
-    // TODO
+    // TODO : Collapse code
+    Reserve(other.m_size);
+    CopyRange(begin(), end(), other.begin(), TPODType<Tp>());
 }
 
 /// \brief  Move constructor
 /// \param  other A rvalue on the vector to move
 template <typename Tp>
 TVector<Tp>::TVector(TVector<value_t>&& other) noexcept
+: m_size(other.m_size)
+, m_capacity(other.m_capacity)
+, m_aStorage(other.m_aStorage)
 {
-    // TODO
+    other.m_size     = 0;
+    other.m_capacity = 0;
+    other.m_aStorage = nullptr;
 }
 
 /// \brief  Initializer
@@ -81,14 +96,22 @@ TVector<Tp>::TVector(TVector<value_t>&& other) noexcept
 template <typename Tp>
 TVector<Tp>::TVector(std::initializer_list<value_t> il)
 {
-    // TODO
+    Reserve(il.size());
+
+    // TODO : Optimize with future iterators
+    size nItem = 0;
+    for(value_t & val : il)
+    {
+        new((void *)&m_aStorage[nItem]) Tp(static_cast<value_t&&>(val));
+        ++nItem;
+    }
 }
 
 /// \brief  Destructor
 template <typename Tp>
 TVector<Tp>::~TVector() noexcept
 {
-    DestructRange(Begin(), End(), TPODType<Tp>());
+    DestructRange(begin(), end(), TPODType<Tp>());
     delete[] m_aStorage;
 }
 
@@ -96,7 +119,10 @@ TVector<Tp>::~TVector() noexcept
 template <typename Tp>
 void TVector<Tp>::Clear() noexcept
 {
-    // TODO
+    DestructRange(begin(), end(), TPODType<Tp>());
+
+    // Resets the size to 0
+    m_size = 0;
 }
 
 /// \brief  Reserves the storage space for n elements
@@ -104,7 +130,21 @@ void TVector<Tp>::Clear() noexcept
 template <typename Tp>
 void TVector<Tp>::Reserve(size n)
 {
-    // TODO
+    if(m_capacity == 0)
+    {
+        m_capacity = 2;
+    }
+
+    // TODO : Search for optimizations
+    if(n > m_capacity)
+    {
+        // Determines the next power of two higher than count
+        while(m_capacity < n)
+        { m_capacity <<= 1; }
+
+        // Reallocates and copy old values
+        Reallocate(/* None */);
+    }
 }
 
 /// \brief  Removes the last elements of the vector
@@ -112,7 +152,9 @@ void TVector<Tp>::Reserve(size n)
 template <typename Tp>
 void TVector<Tp>::PopBack() noexcept
 {
-    // TODO
+    // TODO : Move in allocator, Collapse code
+    m_aStorage[m_size - 1].~Tp();
+    --m_size;
 }
 
 /// \brief  Adds the given element at the end of the vector
@@ -121,16 +163,30 @@ void TVector<Tp>::PopBack() noexcept
 template <typename Tp>
 void TVector<Tp>::PushBack(const_reference_t val)
 {
-    // TODO
+    if(m_size == m_capacity)
+    {
+        Grow(/* None */);
+    }
+
+    // TODO : Move this code in allocator
+    new((void *)&m_aStorage[m_size]) Tp(val);
+    ++m_size;
 }
 
 /// \brief  Adds the given element at the end of the vector
 ///         by using move semantics / ctor
 /// \param  A value_t rvalue on the element to add
 template <typename Tp>
-void TVector<Tp>::PushBack(value_t &&  val)
+void TVector<Tp>::PushBack(value_t && val)
 {
-    // TODO
+    if(m_size == m_capacity)
+    {
+        Grow(/* None */);
+    }
+
+    // TODO : Move this code in allocator
+    new((void *)&m_aStorage[m_size]) Tp(static_cast<Tp&&>(val));
+    ++m_size;
 }
 
 /// \brief  Adds elements at the end of the vector by using move semantics
@@ -140,7 +196,7 @@ template <typename Tp>
 template <class ... Args>
 void TVector<Tp>::EmplaceBack(Args&& ...args)
 {
-    // TODO
+    // TODO : Later
 }
 
 /// \brief  Returns the element at the given position with bounds checking
@@ -220,23 +276,23 @@ typename TVector<Tp>::const_reference_t TVector<Tp>::Front() const noexcept
 /// \brief  Returns the end iterator
 /// \return The end iterator
 template <typename Tp>
-typename TVector<Tp>::iterator TVector<Tp>::End() noexcept
+typename TVector<Tp>::iterator TVector<Tp>::end() noexcept
 {
-    return m_aStorage[m_size];
+    return &m_aStorage[m_size];
 }
 
 /// \brief  Returns the end iterator
 /// \return The end const_iterator
 template <typename Tp>
-typename TVector<Tp>::const_iterator TVector<Tp>::End() const noexcept
+typename TVector<Tp>::const_iterator TVector<Tp>::end() const noexcept
 {
-    return m_aStorage[m_size];
+    return &m_aStorage[m_size];
 }
 
 /// \brief  Returns the begin iterator
 /// \return The begin iterator
 template <typename Tp>
-typename TVector<Tp>::iterator TVector<Tp>::Begin() noexcept
+typename TVector<Tp>::iterator TVector<Tp>::begin() noexcept
 {
     return m_aStorage;
 }
@@ -244,7 +300,7 @@ typename TVector<Tp>::iterator TVector<Tp>::Begin() noexcept
 /// \brief  Returns the begin iterator
 /// \return The begin const_iterator
 template <typename Tp>
-typename TVector<Tp>::const_iterator TVector<Tp>::Begin() const noexcept
+typename TVector<Tp>::const_iterator TVector<Tp>::begin() const noexcept
 {
     return m_aStorage;
 }
@@ -293,7 +349,9 @@ typename TVector<Tp>::const_pointer_t TVector<Tp>::Data() const noexcept
 template <typename Tp>
 void TVector<Tp>::Grow()
 {
-    // TODO
+    // TODO : Remove magic constant, Minimize code
+    m_capacity = m_capacity ? m_capacity * 2 : 8;
+    Reallocate();
 }
 
 /// \brief  Increases the storage space and copy all elements in the new
@@ -301,81 +359,143 @@ void TVector<Tp>::Grow()
 template <typename Tp>
 void TVector<Tp>::Reallocate()
 {
-    // TODO
+    Tp * oldStorage = m_aStorage;
+    m_aStorage = (Tp *)malloc(m_capacity * sizeof(Tp));
+
+    // Copies the old storage space into the new one
+    CopyRange(begin(), end(), oldStorage, TPODType<Tp>());
+
+    free(oldStorage);
 }
 
-/// \brief
+/// \brief  Copies raw memory from begin to dest
+///         This method is optimized for POD structure
+/// \param  begin The begin of the range to copy
+/// \param  end The end of the range to copy
+/// \param  dest The destination buffer
+/// \param  tag The object is a POD structure
 template <typename Tp>
-/* static */ void TVector<Tp>::FillRange(const_iterator begin, const_iterator end, PODTag tag)
+/* static */ void TVector<Tp>::CopyRange(iterator begin, const_iterator end, iterator dest, PODTag tag)
 {
-    // TODO
+    memcpy((void *)dest, (const void *)begin, (end - begin) * sizeof(Tp));
 }
 
-/// \brief
+/// \brief  Copies all element in the range into dest
+/// \param  begin The begin of the range to copy
+/// \param  end The end of the range to copy
+/// \param  dest The destination buffer
+/// \param  tag The object is not a POD structure
 template <typename Tp>
-/* static */ void TVector<Tp>::FillRange(const_iterator begin, const_iterator end, NonPODTag tag)
+/* static */ void TVector<Tp>::CopyRange(iterator begin, const_iterator end, iterator dest, NonPODTag tag)
 {
-    // TODO
+    // TODO : Minimize / Collapse code
+    while(begin != end)
+    {
+        new((void *)dest) Tp(*begin);
+        ++begin;
+        ++dest;
+    }
 }
 
-/// \brief
+/// \brief  Does nothing because of POD structure
+///         This method is optimized for POD struc
+/// \param  begin The begin of the range
+/// \param  end The end of the range
+/// \param  PODTag The object is a POD structure
 template <typename Tp>
-/* static */ void TVector<Tp>::DeleteRange(const_iterator begin, const_iterator end, PODTag tag)
+/* static */ void TVector<Tp>::DestructRange(iterator begin, const_iterator end, PODTag tag)
 {
-    // TODO
-}
-
-/// \brief
-template <typename Tp>
-/* static */ void TVector<Tp>::DeleteRange(const_iterator begin, const_iterator end, NonPODTag tag)
-{
-    // TODO
-}
-
-/// \brief  Calls the destructor on all elements
-/// \tparam IsPOD Is the type a plain old data structure ?
-template <typename Tp>
-/* static */ void TVector<Tp>::DestructRange(const_iterator begin, const_iterator end, PODTag tag)
-{
-    // TODO
-}
-
-/// \brief  Specialized version of DestructRange for POD
-///         Does nothing.
-template <typename Tp>
-/* static */ void TVector<Tp>::DestructRange(const_iterator begin, const_iterator end, NonPODTag tag)
-{
+    // TODO : Minimize / Collapse code
     // None
 }
 
-/// \brief
+/// \brief  Calls destructor on all the elements in the range
+/// \param  begin The begin of the range
+/// \param  end The end of the range
+/// \param  NonPODTag The object is not a POD structure
 template <typename Tp>
-/* static */ void TVector<Tp>::ConstructRange(const_iterator begin, const_iterator end, PODTag tag)
+/* static */ void TVector<Tp>::DestructRange(iterator begin, const_iterator end, NonPODTag tag)
 {
-    // TODO
+    // TODO : Minimize / Collapse code
+    while(begin != end)
+    {
+        begin->~Tp();
+        ++begin;
+    }
 }
 
-/// \brief
+/// \brief  Does nothing because of POD structure
+///         This method is optimized for POD structure
+/// \param  begin The begin of the range
+/// \param  end The end of the range
+/// \param  PODTag The object is a POD structure
 template <typename Tp>
-/* static */ void TVector<Tp>::ConstructRange(const_iterator begin, const_iterator end, NonPODTag tag)
+/* static */ void TVector<Tp>::ConstructRange(iterator begin, const_iterator end, PODTag tag)
 {
-    // TODO
+    // TODO : Minimize / Collapse code
+    // None
+}
+
+/// \brief  Constructs all objects in the range
+/// \param  begin The begin of the range
+/// \param  end The end of the range
+/// \param  NonPODTag The object is not a POD structure
+template <typename Tp>
+/* static */ void TVector<Tp>::ConstructRange(iterator begin, const_iterator end, NonPODTag tag)
+{
+    // TODO : Minimize / Collapse code
+    while(begin != end)
+    {
+        new((void*)begin) Tp; // Avoid zero initialization
+        ++begin;
+    }
+}
+
+/// \brief  Does nothing because of POD structure
+///         This method is optimized for POD structure
+/// \param  begin The begin of the range
+/// \param  end The end of the range
+/// \param  PODTag The object is a POD structure
+template <typename Tp>
+/* static */ void TVector<Tp>::ConstructRange(iterator begin, const_iterator end, const_reference_t val, PODTag tag)
+{
+    // TODO : Optimize / Minimize / Collapse code
+    while(begin != end)
+    {
+        new((void*)begin) Tp(val); // Avoid zero initialization
+        ++begin;
+    }
+}
+
+/// \brief  Constructs all objects in the range
+/// \param  begin The begin of the range
+/// \param  end The end of the range
+/// \param  NonPODTag The object is not a POD structure
+template <typename Tp>
+/* static */ void TVector<Tp>::ConstructRange(iterator begin, const_iterator end, const_reference_t val, NonPODTag tag)
+{
+    // TODO : Minimize / Collapse code
+    while(begin != end)
+    {
+        new((void*)begin) Tp(val); // Avoid zero initialization
+        ++begin;
+    }
 }
 
 /// \brief  Returns an the begin iterator of the given vector
 /// \return The begin iterator
 template <typename Tp>
-typename TVector<Tp>::iterator Begin(TVector<Tp>& vector) noexcept
+typename TVector<Tp>::iterator begin(TVector<Tp>& vector) noexcept
 {
-    return vector.Begin();
+    return vector.begin();
 }
 
 /// \brief  Returns an the end iterator of the given vector
 /// \return The end iterator
 template <typename Tp>
-typename TVector<Tp>::iterator End  (TVector<Tp>& vector) noexcept
+typename TVector<Tp>::iterator end(TVector<Tp>& vector) noexcept
 {
-    return vector.End();
+    return vector.begin();
 }
 
 } // !Disparity
