@@ -30,7 +30,7 @@
 
 #include <initializer_list>
 #include "Platform/Configuration/Configuration.hh"
-#include <vector>
+
 /// \namespace Disparity
 namespace Disparity
 {
@@ -87,6 +87,16 @@ public:
 
     /* inline */ pointer_t       Data()       noexcept;
     /* inline */ const_pointer_t Data() const noexcept;
+
+private:
+
+    /* inline */ void Grow();
+    /* inline */ void Reallocate();
+
+    /* inline */ template <bool IsPOD> static void FillRange();
+    /* inline */ template <bool IsPOD> static void DeleteRange();
+    /* inline */ template <bool IsPOD> static void DestructRange();
+    /* inline */ template <bool IsPOD> static void ConstructRange();
 
 private:
 

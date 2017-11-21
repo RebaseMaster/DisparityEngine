@@ -88,7 +88,7 @@ TVector<Tp>::TVector(std::initializer_list<value_t> il)
 template <typename Tp>
 TVector<Tp>::~TVector()
 {
-    // TODO
+    delete[] m_aStorage;
 }
 
 /// \brief  Removes all elements from the vector
@@ -115,14 +115,16 @@ void TVector<Tp>::PopBack() /* noexcept */
 }
 
 /// \brief  Adds the given element at the end of the vector
-/// \param  val A const_reference_t on the element to add at the end of the vector
+/// \param  val A const_reference_t on the element
+///             to add at the end of the vector
 template <typename Tp>
 void TVector<Tp>::PushBack(const_reference_t val)
 {
     // TODO
 }
 
-/// \brief  Adds the given element at the end of the vector by using move semantics / ctor
+/// \brief  Adds the given element at the end of the vector
+///         by using move semantics / ctor
 /// \param  A value_t rvalue on the element to add
 template <typename Tp>
 void TVector<Tp>::PushBack(value_t &&  val)
@@ -146,7 +148,8 @@ void TVector<Tp>::EmplaceBack(Args&& ...args)
 template <typename Tp>
 TVector<Tp>::reference_t TVector<Tp>::at(size_t pos) /* noexcept */
 {
-    // TODO
+    // TODO : Assert pos
+    return m_aStorage[pos];
 }
 
 /// \brief  Returns the element at the given position with bounds checking
@@ -155,7 +158,8 @@ TVector<Tp>::reference_t TVector<Tp>::at(size_t pos) /* noexcept */
 template <typename Tp>
 TVector<Tp>::const_reference_t TVector<Tp>::at(size_t pos) const /* noexcept */
 {
-    // TODO
+    // TODO : Assert pos
+    return m_aStorage[pos];
 }
 
 /// \brief  Returns the element at the given position without bounds checking
@@ -164,7 +168,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::at(size_t pos) const /* noexcept */
 template <typename Tp>
 TVector<Tp>::reference_t TVector<Tp>::operator[](size_t pos) /* noexcept */
 {
-    // TODO
+    return m_aStorage[pos];
 }
 
 /// \brief  Returns the element at the given position without bounds checking
@@ -173,7 +177,7 @@ TVector<Tp>::reference_t TVector<Tp>::operator[](size_t pos) /* noexcept */
 template <typename Tp>
 TVector<Tp>::const_reference_t TVector<Tp>::operator[](size_t pos) const /* noexcept */
 {
-    // TODO
+    return m_aStorage[pos];
 }
 
 /// \brief  Returns the last element of the vector
@@ -182,7 +186,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::operator[](size_t pos) const /* noex
 template <typename Tp>
 TVector<Tp>::reference_t TVector<Tp>::Back()  /* noexcept */
 {
-    // TODO
+    return m_aStorage[m_size - 1];
 }
 
 /// \brief  Returns the last element of the vector
@@ -191,7 +195,7 @@ TVector<Tp>::reference_t TVector<Tp>::Back()  /* noexcept */
 template <typename Tp>
 TVector<Tp>::const_reference_t TVector<Tp>::Back() const /* noexcept */
 {
-    // TODO
+    return m_aStorage[m_size - 1];
 }
 
 /// \brief  Returns the first element of the vector
@@ -200,7 +204,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::Back() const /* noexcept */
 template <typename Tp>
 TVector<Tp>::reference_t TVector<Tp>::Front() /* noexcept */
 {
-    // TODO
+    return *m_aStorage;
 }
 
 /// \brief  Returns the first element of the vector
@@ -209,7 +213,7 @@ TVector<Tp>::reference_t TVector<Tp>::Front() /* noexcept */
 template <typename Tp>
 TVector<Tp>::const_reference_t TVector<Tp>::Front() const /* noexcept */
 {
-    // TODO
+    return *m_aStorage;
 }
 
 /// \brief  Returns the current size of the vector
@@ -217,7 +221,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::Front() const /* noexcept */
 template <typename Tp>
 size_t TVector<Tp>::Size()    const /* noexcept */
 {
-    // TODO
+    return m_size;
 }
 
 /// \brief  Returns the current capacity of the vector
@@ -225,7 +229,7 @@ size_t TVector<Tp>::Size()    const /* noexcept */
 template <typename Tp>
 size_t TVector<Tp>::Capcity() const /* noexcept */
 {
-    // TODO
+    return m_capacity;
 }
 
 /// \brief  Tells if the vector is empty or not
@@ -233,7 +237,7 @@ size_t TVector<Tp>::Capcity() const /* noexcept */
 template <typename Tp>
 bool TVector<Tp>::Empty() const /* noexcept */
 {
-    // TODO
+    return (m_size == 0);
 }
 
 /// \brief  Returns a pointer on the internal storage of the vector
@@ -241,13 +245,92 @@ bool TVector<Tp>::Empty() const /* noexcept */
 template <typename Tp>
 TVector<Tp>::pointer_t TVector<Tp>::Data() /* noexcept */
 {
-    // TODO
+    return m_aStorage;
 }
 
 /// \brief  Returns a read only pointer on the internal storage of the vector
 /// \return A const_pointer_t on the internal storage
 template <typename Tp>
 TVector<Tp>::const_pointer_t TVector<Tp>::Data() const /* noexcept */
+{
+    return m_aStorage;
+}
+
+/// \brief  Increases the capacity of the vector
+template <typename Tp>
+void TVector<Tp>::Grow()
+{
+    // TODO
+}
+
+/// \brief  Increases the storage space and copy all elements in the new
+///         buffer
+template <typename Tp>
+void TVector<Tp>::Reallocate()
+{
+    // TODO
+}
+
+/// \brief
+template <typename Tp>
+template <bool IsPOD>
+/* static */ void TVector<Tp>::FillRange()
+{
+    // TODO
+}
+
+/// \brief
+template <typename Tp>
+template <>
+/* static */ void TVector<Tp>::FillRange<true>()
+{
+    // TODO
+}
+
+/// \brief
+template <typename Tp>
+template <bool IsPOD>
+/* static */ void TVector<Tp>::DeleteRange()
+{
+    // TODO
+}
+
+/// \brief
+template <typename Tp>
+template <>
+/* static */ void TVector<Tp>::DeleteRange<true>()
+{
+    // TODO
+}
+
+/// \brief
+template <typename Tp>
+template <bool IsPOD>
+/* static */ void TVector<Tp>::DestructRange()
+{
+    // TODO
+}
+
+/// \brief
+template <typename Tp>
+template <>
+/* static */ void TVector<Tp>::DestructRange<true>()
+{
+    // TODO
+}
+
+/// \brief
+template <typename Tp>
+template <bool IsPOD>
+/* static */ void TVector<Tp>::ConstructRange()
+{
+    // TODO
+}
+
+/// \brief
+template <typename Tp>
+template <>
+/* static */ void TVector<Tp>::ConstructRange<true>()
 {
     // TODO
 }
