@@ -25,6 +25,7 @@
 /// \package    Core/DSTL/Collection/Vector
 /// \author     Vincent STEHLY--CALISTO
 
+#include <type_traits>
 #include "TVector.hpp"
 
 /// \namespace Disparity
@@ -88,6 +89,7 @@ TVector<Tp>::TVector(std::initializer_list<value_t> il)
 template <typename Tp>
 TVector<Tp>::~TVector()
 {
+    DestructRange<std::is_pod<Tp>::value>();
     delete[] m_aStorage;
 }
 
