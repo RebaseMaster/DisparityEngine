@@ -19,30 +19,50 @@
 /// with this program; if not, write to the Free Software Foundation, Inc.,
 /// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-/// \file       Type.hh
+/// \file       TVector.hpp
 /// \date       20/11/2017
 /// \project    Disparity
-/// \package    Platform/Configuration
+/// \package    Core/DSTL/Collection/Vector
 /// \author     Vincent STEHLY--CALISTO
 
-#ifndef DISPARITY_TYPE_HPP__
-#define DISPARITY_TYPE_HPP__
+#ifndef TVECTOR_HPP__
+#define TVECTOR_HPP__
 
-typedef unsigned char	    uchar;
-typedef unsigned short	    ushort;
-typedef unsigned int	    uint;
-typedef unsigned long	    ulong;
+#include "Platform/Configuration/Configuration.hh"
 
-typedef unsigned char       uint8;
-typedef unsigned short      uint16;
-typedef unsigned int        uint32;
-typedef unsigned long long  uint64;
+/// \namespace Disparity
+namespace Disparity
+{
 
-typedef char                int8;
-typedef short               int16;
-typedef int                 int32;
-typedef long long           int64;
+/// \class  TVector
+/// \brief  Custom dynamic array from the DSTL
+/// \tparam Tp The stored object type
+template <typename Tp>
+class TVector
+{
+public:
 
-typedef long unsigned       size_t;
+    using value_t           = Tp;
+    using pointer_t         = Tp*;
+    using reference_t       = Tp&;
+    using const_pointer_t   = Tp const*;
+    using const_reference_t = Tp const&;
 
-#endif // DISPARITY_TYPE_HPP__
+    reference_t       /* INLINE */ operator[](size_t pos);
+    const_reference_t /* INLINE */ operator[](size_t pos) const;
+
+private:
+
+    static /* INLINE */ void      CopyRange  (...);
+    static /* INLINE */ void      DeleteRange(...);
+
+private:
+
+    size_t      m_size;
+    size_t      m_capacity;
+    pointer_t   m_aStorage;
+};
+
+} // !Disparity
+
+#endif // !TVECTOR_HPP__

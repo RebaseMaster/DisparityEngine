@@ -19,30 +19,14 @@
 /// with this program; if not, write to the Free Software Foundation, Inc.,
 /// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-/// \file       Type.hh
-/// \date       20/11/2017
+/// \file       TAllocator.hpp
+/// \date       21/11/2017
 /// \project    Disparity
-/// \package    Platform/Configuration
+/// \package    Core/DSTL/Memory/
 /// \author     Vincent STEHLY--CALISTO
 
-#ifndef DISPARITY_TYPE_HPP__
-#define DISPARITY_TYPE_HPP__
+#ifndef TALLOCATOR_HPP__
+#define TALLOCATOR_HPP__
 
-typedef unsigned char	    uchar;
-typedef unsigned short	    ushort;
-typedef unsigned int	    uint;
-typedef unsigned long	    ulong;
 
-typedef unsigned char       uint8;
-typedef unsigned short      uint16;
-typedef unsigned int        uint32;
-typedef unsigned long long  uint64;
-
-typedef char                int8;
-typedef short               int16;
-typedef int                 int32;
-typedef long long           int64;
-
-typedef long unsigned       size_t;
-
-#endif // DISPARITY_TYPE_HPP__
+#endif // !TALLOCATOR_HPP__
