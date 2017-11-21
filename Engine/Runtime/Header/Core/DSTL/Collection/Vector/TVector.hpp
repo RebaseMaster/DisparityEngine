@@ -28,6 +28,7 @@
 #ifndef TVECTOR_HPP__
 #define TVECTOR_HPP__
 
+#include <initializer_list>
 #include "Platform/Configuration/Configuration.hh"
 
 /// \namespace Disparity
@@ -48,8 +49,18 @@ public:
     using const_pointer_t   = Tp const*;
     using const_reference_t = Tp const&;
 
-    reference_t       /* INLINE */ operator[](size_t pos);
-    const_reference_t /* INLINE */ operator[](size_t pos) const;
+    explicit /* INLINE */ TVector();
+    explicit /* INLINE */ TVector(size_t n);
+    explicit /* INLINE */ TVector(size_t n, const_reference_t val);
+
+    /* INLINE */ TVector(TVector<value_t> const& other);
+    /* INLINE */ TVector(TVector<value_t>&&      other);
+    /* INLINE */ TVector(std::initializer_list<value_t> il);
+
+    /* INLINE */ ~TVector() noexcept;
+
+    /* INLINE */ reference_t       operator[](size_t pos);
+    /* INLINE */ const_reference_t operator[](size_t pos) const;
 
 private:
 
@@ -64,5 +75,7 @@ private:
 };
 
 } // !Disparity
+
+#include "Core/DSTL/Collection/Vector/TVector.inl"
 
 #endif // !TVECTOR_HPP__
