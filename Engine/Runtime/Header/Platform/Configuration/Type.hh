@@ -47,6 +47,6 @@ typedef short               int16;
 typedef int                 int32;
 typedef long long           int64;
 
-typedef long unsigned       size_t;
+typedef long unsigned       size;
 
 #endif // DISPARITY_TYPE_HPP__

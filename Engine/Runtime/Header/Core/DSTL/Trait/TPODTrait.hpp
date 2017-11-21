@@ -19,33 +19,24 @@
 /// with this program; if not, write to the Free Software Foundation, Inc.,
 /// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-/// \file       TVector.hpp
+/// \file       TPODTrait.hpp
 /// \date       21/11/2017
 /// \project    Disparity
 /// \package    Core/DSTL/Trait/
 /// \author     Vincent STEHLY--CALISTO
 
-#ifndef TPLAIN_OLD_DATA_TRAIT_HPP_
-#define TPLAIN_OLD_DATA_TRAIT_HPP_
+#ifndef TPOD_TRAIT_HPP__
+#define TPOD_TRAIT_HPP__
 
-template<typename _Tp, _Tp __v>
-struct integral_constant
+/// \brief  Encapsulates std::is_pod<T>
+/// \tparam Tp The type to check POD compatibility
+template <typename Tp>
+struct IsPod
 {
-    static constexpr _Tp                  value = __v;
-    typedef _Tp                           value_type;
-    typedef integral_constant<_Tp, __v>   type;
-    explicit constexpr operator value_type() { return value; }
+    static bool value;
 };
 
-template<typename _Tp, _Tp __v>
-constexpr _Tp integral_constant<_Tp, __v>::value;
+// Static member initialization of IsPod<Tp>::value
+template <typename Tp> bool IsPod<Tp>::value = std::is_pod<Tp>::value;
 
-typedef integral_constant<bool, true>     true_type;
-typedef integral_constant<bool, false>    false_type;
-
-template<typename _Tp>
-struct is_pod
-        : public integral_constant<bool, __is_pod(_Tp)>
-{ };
-
-#endif // !TPLAIN_OLD_DATA_TRAIT_HPP_
+#endif // !TPOD_TRAIT_HPP__

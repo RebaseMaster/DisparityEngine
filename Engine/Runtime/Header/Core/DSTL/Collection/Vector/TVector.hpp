@@ -52,8 +52,8 @@ public:
 public:
 
     explicit /* inline */ TVector() noexcept;
-    explicit /* inline */ TVector(size_t n);
-    explicit /* inline */ TVector(size_t n, const_reference_t val);
+    explicit /* inline */ TVector(size n);
+    explicit /* inline */ TVector(size n, const_reference_t val);
 
     /* inline */ TVector(TVector<value_t> const& other);
     /* inline */ TVector(TVector<value_t>&&      other) noexcept;
@@ -62,7 +62,7 @@ public:
     /* inline */ ~TVector() noexcept;
 
     /* inline */ void Clear() noexcept;
-    /* inline */ void Reserve(size_t n);
+    /* inline */ void Reserve(size n);
 
     /* inline */ void PopBack() noexcept;
     /* inline */ void PushBack(const_reference_t val);
@@ -71,19 +71,19 @@ public:
     template <class ... Args>
     /* inline */  void EmplaceBack(Args&& ...args);
 
-    /* inline */ reference_t       at(size_t pos)       noexcept;
-    /* inline */ const_reference_t at(size_t pos) const noexcept;
-    /* inline */ reference_t       operator[](size_t pos)       noexcept;
-    /* inline */ const_reference_t operator[](size_t pos) const noexcept;
+    /* inline */ reference_t       at(size pos)       noexcept;
+    /* inline */ const_reference_t at(size pos) const noexcept;
+    /* inline */ reference_t       operator[](size pos)       noexcept;
+    /* inline */ const_reference_t operator[](size pos) const noexcept;
 
     /* inline */ reference_t       Back()        noexcept;
     /* inline */ const_reference_t Back()  const noexcept;
     /* inline */ reference_t       Front()       noexcept;
     /* inline */ const_reference_t Front() const noexcept;
 
-    /* inline */ size_t Size()    const noexcept;
-    /* inline */ size_t Capcity() const noexcept;
-    /* inline */ bool   Empty()   const noexcept;
+    /* inline */ size Size()    const noexcept;
+    /* inline */ size Capcity() const noexcept;
+    /* inline */ bool  Empty()  const noexcept;
 
     /* inline */ pointer_t       Data()       noexcept;
     /* inline */ const_pointer_t Data() const noexcept;
@@ -100,8 +100,8 @@ private:
 
 private:
 
-    size_t      m_size;
-    size_t      m_capacity;
+    size        m_size;
+    size        m_capacity;
     pointer_t   m_aStorage;
 };
 

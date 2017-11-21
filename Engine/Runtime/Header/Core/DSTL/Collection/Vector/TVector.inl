@@ -46,7 +46,7 @@ template <typename Tp>
 ///         Fills the vector with n values
 /// \param  n The number of values to fill the vector
 template <typename Tp>
-/* explicit */ TVector<Tp>::TVector(size_t n)
+/* explicit */ TVector<Tp>::TVector(size n)
 {
     // TODO
 }
@@ -56,7 +56,7 @@ template <typename Tp>
 /// \param  n The number of values to fill the vector
 /// \param  val The value to copy
 template <typename Tp>
-/* explicit */ TVector<Tp>::TVector(size_t n, const_reference_t val)
+/* explicit */ TVector<Tp>::TVector(size n, const_reference_t val)
 {
     // TODO
 }
@@ -103,7 +103,7 @@ void TVector<Tp>::Clear() /* noexcept */
 /// \brief  Reserves the storage space for n elements
 /// \param  n The number of elements to reserve
 template <typename Tp>
-void TVector<Tp>::Reserve(size_t n)
+void TVector<Tp>::Reserve(size n)
 {
     // TODO
 }
@@ -148,7 +148,7 @@ void TVector<Tp>::EmplaceBack(Args&& ...args)
 /// \param  pos The pos of the element to return
 /// \return A reference_t on the element
 template <typename Tp>
-TVector<Tp>::reference_t TVector<Tp>::at(size_t pos) /* noexcept */
+TVector<Tp>::reference_t TVector<Tp>::at(size pos) /* noexcept */
 {
     // TODO : Assert pos
     return m_aStorage[pos];
@@ -158,7 +158,7 @@ TVector<Tp>::reference_t TVector<Tp>::at(size_t pos) /* noexcept */
 /// \param  pos The pos of the element to return
 /// \return A const_reference_t on the element
 template <typename Tp>
-TVector<Tp>::const_reference_t TVector<Tp>::at(size_t pos) const /* noexcept */
+TVector<Tp>::const_reference_t TVector<Tp>::at(size pos) const /* noexcept */
 {
     // TODO : Assert pos
     return m_aStorage[pos];
@@ -168,7 +168,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::at(size_t pos) const /* noexcept */
 /// \param  pos The pos of the element to return
 /// \return A reference_t on the element
 template <typename Tp>
-TVector<Tp>::reference_t TVector<Tp>::operator[](size_t pos) /* noexcept */
+TVector<Tp>::reference_t TVector<Tp>::operator[](size pos) /* noexcept */
 {
     return m_aStorage[pos];
 }
@@ -177,7 +177,7 @@ TVector<Tp>::reference_t TVector<Tp>::operator[](size_t pos) /* noexcept */
 /// \param  pos The pos of the element to return
 /// \return A const_reference_t on the element
 template <typename Tp>
-TVector<Tp>::const_reference_t TVector<Tp>::operator[](size_t pos) const /* noexcept */
+TVector<Tp>::const_reference_t TVector<Tp>::operator[](size pos) const /* noexcept */
 {
     return m_aStorage[pos];
 }
@@ -221,7 +221,7 @@ TVector<Tp>::const_reference_t TVector<Tp>::Front() const /* noexcept */
 /// \brief  Returns the current size of the vector
 /// \return The size of the vector
 template <typename Tp>
-size_t TVector<Tp>::Size()    const /* noexcept */
+size TVector<Tp>::Size()    const /* noexcept */
 {
     return m_size;
 }
@@ -229,7 +229,7 @@ size_t TVector<Tp>::Size()    const /* noexcept */
 /// \brief  Returns the current capacity of the vector
 /// \return The capacity of the vector
 template <typename Tp>
-size_t TVector<Tp>::Capcity() const /* noexcept */
+size TVector<Tp>::Capcity() const /* noexcept */
 {
     return m_capacity;
 }

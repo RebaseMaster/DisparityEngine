@@ -14,14 +14,12 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-INCLUDE_DIRECTORIES(
-        ${DISPARITY_GTEST_INC_DIR}
-        ${DISPARITY_GMOCK_INC_DIR}
-        ${DISPARITY_INCLUDE_DIR})
+# Adds all runtime header
+INCLUDE_DIRECTORIES(${DISPARITY_ENGINE_DIR}/Runtime/Header)
 
-LINK_DIRECTORIES(
-        ${DISPARITY_LIB_DIR})
+# Compile all tests
+ADD_EXECUTABLE(DISPARITY_RUNTIME_UNIT_TEST
+        Core/DSTL/Trait/UnitTestTPODTrait.cpp)
 
-ADD_SUBDIRECTORY(Runtime)
-ADD_SUBDIRECTORY(SandBox)
-ADD_SUBDIRECTORY(SDL)
+# Linking ...
+TARGET_LINK_LIBRARIES(DISPARITY_RUNTIME_UNIT_TEST gtest gtest_main ${PLATFORM_DEPENDENCIES})
