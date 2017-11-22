@@ -52,6 +52,7 @@ template <typename Tp>
     // TODO : Collapse code
     Reserve(n);
     ConstructRange(begin(), begin() + n, TPODType<Tp>());
+    m_size = n;
 }
 
 /// \brief  Fill constructor
@@ -65,6 +66,7 @@ template <typename Tp>
     // TODO : Collapse code
     Reserve(n);
     ConstructRange(begin(), begin() + n, val, TPODType<Tp>());
+    m_size = n;
 }
 
 /// \brief  Copy constructor
@@ -76,6 +78,7 @@ TVector<Tp>::TVector(TVector<value_t> const& other)
     // TODO : Collapse code
     Reserve(other.m_size);
     CopyRange(begin(), end(), other.begin(), TPODType<Tp>());
+    m_size = other.m_size;
 }
 
 /// \brief  Move constructor
@@ -495,7 +498,7 @@ typename TVector<Tp>::iterator begin(TVector<Tp>& vector) noexcept
 template <typename Tp>
 typename TVector<Tp>::iterator end(TVector<Tp>& vector) noexcept
 {
-    return vector.begin();
+    return vector.end();
 }
 
 } // !Disparity

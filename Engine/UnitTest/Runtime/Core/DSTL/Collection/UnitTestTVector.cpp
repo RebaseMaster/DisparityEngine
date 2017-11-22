@@ -27,13 +27,53 @@
 #include "gtest/gtest.h"
 #include "Core/DSTL/Collection/Vector/TVector.hpp"
 
-/// \brief  Test if the TVector is usable with for range loop
-TEST(TVectorUnitTest, TVectorForRangeUnitTest)
+/// \brief  TODO
+TEST(TVectorUnitTest, TVectorDefaultConstructorUnitTest)
 {
-    Disparity::TVector<int> vector;
-    for(auto x : vector)
-    {
+    Disparity::TVector<int32> vector;
 
+    EXPECT_EQ(vector.Size(),    0);
+    EXPECT_EQ(vector.Capcity(), 0);
+    EXPECT_EQ(vector.Data(),    nullptr_t);
+}
+
+/// \brief  TODO
+TEST(TVectorUnitTest, TVectorDefaultFillConstructorUnitTest)
+{
+    Disparity::TVector<int32> vector(10);
+
+    EXPECT_EQ(vector.Size(),    10);
+    EXPECT_EQ(vector.Capcity(), 16);
+    EXPECT_NE(vector.Data(),    nullptr_t);
+}
+
+/// \brief  TODO
+TEST(TVectorUnitTest, TVectorValueFillConstructorUnitTest)
+{
+    Disparity::TVector<int32> vector(10, 42);
+
+    EXPECT_EQ(vector.Size(),    10);
+    EXPECT_EQ(vector.Capcity(), 16);
+    EXPECT_NE(vector.Data(),    nullptr_t);
+
+    for(size i = 0; i < vector.Size(); ++i)
+    {
+        EXPECT_EQ(vector[i], 42);
     }
 }
 
+/// \brief  TODO
+TEST(TVectorUnitTest, TVectorCopyConstructorUnitTest)
+{
+    Disparity::TVector<int32> vector(10, 42);
+    Disparity::TVector<int32> copy(vector);
+
+    EXPECT_EQ(copy.Size(),    10);
+    EXPECT_EQ(copy.Capcity(), 16);
+    EXPECT_NE(copy.Data(),    nullptr_t);
+
+    for(size i = 0; i < vector.Size(); ++i)
+    {
+        EXPECT_EQ(vector[i], copy[i]);
+    }
+}
