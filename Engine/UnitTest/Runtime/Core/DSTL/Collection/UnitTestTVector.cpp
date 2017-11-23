@@ -25,7 +25,7 @@
 /// \author     Vincent STEHLY--CALISTO
 
 #include "gtest/gtest.h"
-#include "Core/DSTL/Collection/Vector/TVector.hpp"
+#include "Runtime/Header/Core/DSTL/Collection/TVector.hpp"
 
 /// \brief  TODO
 TEST(TVectorUnitTest, TVectorDefaultConstructorUnitTest)
@@ -40,7 +40,7 @@ TEST(TVectorUnitTest, TVectorDefaultConstructorUnitTest)
 /// \brief  TODO
 TEST(TVectorUnitTest, TVectorDefaultFillConstructorUnitTest)
 {
-    Disparity::TVector<int32> vector(10);
+    Disparity::TVector<int> vector(10);
 
     EXPECT_EQ(vector.Size(),    10);
     EXPECT_EQ(vector.Capcity(), 16);
@@ -60,6 +60,8 @@ TEST(TVectorUnitTest, TVectorValueFillConstructorUnitTest)
     {
         EXPECT_EQ(vector[i], 42);
     }
+
+    std::vector<int>::iterator;
 }
 
 /// \brief  TODO

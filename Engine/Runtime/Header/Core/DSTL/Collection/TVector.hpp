@@ -30,7 +30,10 @@
 
 #include <initializer_list>
 #include "Core/DSTL/Trait/TPODTrait.hpp"
+#include "Core/DSTL/Iterator/TNormalIterator.hpp"
+
 #include "Platform/Configuration/Configuration.hh"
+
 
 /// \namespace Disparity
 namespace Disparity
@@ -51,14 +54,14 @@ public:
     using const_reference_t = Tp const&;
 
     // Experimental version
-    using iterator       = pointer_t;
-    using const_iterator = const_pointer_t;
+    using iterator       = TNormalIterator<pointer_t,       TVector<value_t>>;
+    using const_iterator = TNormalIterator<const_pointer_t, TVector<value_t>>;
 
 public:
 
-    explicit /* inline */ TVector() noexcept;
-    explicit /* inline */ TVector(size n);
-    explicit /* inline */ TVector(size n, const_reference_t val);
+    /* inline */ TVector() noexcept;
+    /* inline */ TVector(size n);
+    /* inline */ TVector(size n, const_reference_t val);
 
     /* inline */ TVector(TVector<value_t> const& other);
     /* inline */ TVector(TVector<value_t>&&      other) noexcept;
@@ -120,6 +123,6 @@ private:
 
 } // !Disparity
 
-#include "Core/DSTL/Collection/Vector/TVector.inl"
+#include "Runtime/Header/Core/DSTL/Collection/Impl/TVector.inl"
 
 #endif // !TVECTOR_HPP__

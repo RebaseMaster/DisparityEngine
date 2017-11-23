@@ -17,10 +17,14 @@
 # Adds all runtime header
 INCLUDE_DIRECTORIES(${DISPARITY_ENGINE_DIR}/Runtime/Header)
 
+ADD_DEFINITIONS(-std=c++11)
+
 # Compile all tests
 ADD_EXECUTABLE(DISPARITY_RUNTIME_UNIT_TEST
         Core/DSTL/Trait/UnitTestTPODTrait.cpp
         Core/DSTL/Collection/UnitTestTVector.cpp)
+
+ADD_DEPENDENCIES(DISPARITY_RUNTIME_UNIT_TEST gtest gtest_main)
 
 # Linking ...
 TARGET_LINK_LIBRARIES(DISPARITY_RUNTIME_UNIT_TEST gtest gtest_main ${PLATFORM_DEPENDENCIES})

@@ -27,7 +27,7 @@
 
 #include <memory.h>
 #include <cstdlib>
-#include "TVector.hpp"
+#include "Runtime/Header/Core/DSTL/Collection/TVector.hpp"
 
 /// \namespace Disparity
 namespace Disparity
@@ -75,9 +75,9 @@ template <typename Tp>
 TVector<Tp>::TVector(TVector<value_t> const& other)
 : TVector<Tp>::TVector()
 {
-    // TODO : Collapse code
+    // TODO : Collapse code, Fix const correctness
     Reserve(other.m_size);
-    CopyRange(begin(), end(), other.begin(), TPODType<Tp>());
+    CopyRange(begin(), end(), ((value_t *)other.begin()), TPODType<Tp>());
     m_size = other.m_size;
 }
 
