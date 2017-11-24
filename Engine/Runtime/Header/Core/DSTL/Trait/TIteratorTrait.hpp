@@ -52,7 +52,7 @@ struct TIteratorTrait<Tp*>
 
 /// \brief Specialization for const pointer types.
 template<typename Tp>
-struct iterator_traits<const Tp*>
+struct TIteratorTrait<const Tp*>
 {
     using value_t     = Tp;
     using pointer_t   = const Tp*;

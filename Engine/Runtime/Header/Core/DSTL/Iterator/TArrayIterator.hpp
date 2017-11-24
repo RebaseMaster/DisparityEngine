@@ -2,6 +2,7 @@
 ///
 /// Owners :
 ///
+/// JORDAN BAS
 /// Maxime PERAULT
 /// Vincent STEHLY--CALISTO
 ///
@@ -19,22 +20,24 @@
 /// with this program; if not, write to the Free Software Foundation, Inc.,
 /// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-/// \file       TNormalIterator.hpp
-/// \date       22/11/2017
+/// \file       TArrayIterator.hpp
+/// \date       23/11/2017
 /// \project    Disparity
 /// \package    Core/DSTL/Iterator/
 /// \author     Vincent STEHLY--CALISTO
 
-#ifndef TNORMAL_ITERATOR_HPP__
-#define TNORMAL_ITERATOR_HPP__
+#ifndef TARRAY_ITERATOR_HPP__
+#define TARRAY_ITERATOR_HPP__
 
+#include <vector>
+#include <Runtime/Header/Platform/Configuration/Type.hh>
 #include "Core/DSTL/Trait/TIteratorTrait.hpp"
 
 template<typename Iterator, typename Container>
-class TNormalIterator
+class TArrayIterator
 {
 public:
-    std::map::iterator
+
     using trait_t = TIteratorTrait<Iterator>;
 
     using iterator_t  = Iterator;
@@ -46,21 +49,30 @@ public:
 
 public:
 
-    reference_t operator*()  const;
-    pointer_t   operator->() const;
-    TNormalIterator<Iterator, Container>& operator++();
-    TNormalIterator<Iterator, Container>  operator++(int);
+    /* inline */ constexpr TArrayIterator()                            noexcept;
+    /* inline */ explicit  TArrayIterator(TArrayIterator const& other) noexcept;
 
-    TNormalIterator<Iterator, Container>& operator--();
-    TNormalIterator<Iterator, Container>  operator--(int);
+    // Forward iterator requirements
+    reference_t operator *() noexcept;
+    pointer_t   operator->() noexcept;
 
-    reference_t operator[](const difference_type& __n) const;
-    TNormalIterator<Iterator, Container>& operator+=(const difference_type& __n);
-    TNormalIterator<Iterator, Container>  operator+ (const difference_type& __n) const;
-    TNormalIterator<Iterator, Container>& operator-=(const difference_type& __n);
+    TArrayIterator& operator++()    noexcept;
+    TArrayIterator  operator++(int) noexcept;
 
-    TNormalIterator<Iterator, Container> operator-(const difference_type& __n) const;
-    const Iterator& base() const;
+    // Bidirectional iterator requirements
+    TArrayIterator& operator--()    noexcept;
+    TArrayIterator  operator--(int) noexcept;
+
+    // Random access iterator requirements
+    reference_t     operator[](size __n) const noexcept;
+    TArrayIterator& operator+=(size __n)       noexcept;
+    TArrayIterator  operator+ (size __n) const noexcept;
+    TArrayIterator& operator-=(size __n)       noexcept;
+    TArrayIterator  operator- (size __n) const noexcept;
+
+    const _Iterator&
+    base() const _GLIBCXX_NOEXCEPT
+    { return _M_current; }
 };
 
-#endif TNORMAL_ITERATOR_HPP__
+#endif // !TARRAY_ITERATOR_HPP__
